@@ -31,18 +31,18 @@
 </template>
 
 <script>
-import db from './firebaseInit'
-export default {
-	name: 'edit-employee',
-	data () {
-		return {
-			employee_id: null,
-			name: null,
-			dept: null,
-			position: null
-		}
-	},
-	beforeRouteEnter (to, from, next) {
+  import db from './firebaseInit'
+  export default {
+    name: 'edit-employee',
+    data () {
+      return {
+        employee_id: null,
+        name: null,
+        dept: null,
+        position: null
+      }
+    },
+    beforeRouteEnter (to, from, next) {
       db.collection('employees').where('employee_id', '==', to.params.employee_id).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
           next(vm => {
@@ -53,10 +53,10 @@ export default {
           })
         })
       })
-	},
-	watch: {
-		'$route': 'fetchData'
-	},
+    },
+    watch: {
+      '$route': 'fetchData'
+    },
     methods: {
       fetchData () {
         db.collection('employees').where('employee_id', '==', this.$route.params.employee_id).get().then((querySnapshot) => {
@@ -68,21 +68,21 @@ export default {
           })
         })
       },
-	  updateEmployee () {
-		  	db.collection('employees').where('employee_id', '==', to.params.employee_id).get().then((querySnapshot) => {
-		        querySnapshot.forEach((doc) => {
-		        	doc.ref.update({
-		        		employee_id: this.employee_id,
-						name: this.name,
-						dept: this.dept,
-						position: this.position
-		        	})
-		        	.then(() => {
-		        		this.$router.push({name: 'view-employee', params: {employee_id: this.employee_id}})
-		        	});
-		        })
-		    })
-	  	}
-  	}
-}
+      updateEmployee () {
+        db.collection('employees').where('employee_id', '==', this.$route.params.employee_id).get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.update({
+              employee_id: this.employee_id,
+              name: this.name,
+              dept: this.dept,
+              position: this.position
+            })
+            .then(() => {
+              this.$router.push({ name: 'view-employee', params: { employee_id: this.employee_id }})
+            });
+          })
+        })
+      }
+    }
+  }
 </script>
